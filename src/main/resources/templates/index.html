@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games Release Tracker</title>
+</head>
+<body>
+  <h1>Games Release Tracker</h1>
+  <h2>Select Game Store</h2>
+    <form action="/games" method="get">
+            <select name="store">
+                <option value="steam">Steam</option>
+                <option value="xbox">Xbox</option>
+                <option value="playstation">Playstation</option>
+            </select>
+        <button type="submit">Show Recent Games</button>
+    </form>
+</body>
+</html>
