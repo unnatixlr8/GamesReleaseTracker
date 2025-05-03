@@ -26,6 +26,7 @@ public class PlaystationStrategy implements StoreStrategy {
     public List<GameDto> fetchNewReleases() {
         RestTemplate restTemplate = new RestTemplate();
 
+        // size and offset decides the number of resultset
         String variables = String.format(
                 "{\"id\":\"%s\",\"pageArgs\":{\"size\":48,\"offset\":0},\"sortBy\":{\"name\":\"conceptReleaseDate\",\"isAscending\":false},\"filterBy\":[\"conceptReleaseDate:last_thirty_days\"],\"facetOptions\":[]}",
                 CATEGORY_ID
@@ -49,6 +50,7 @@ public class PlaystationStrategy implements StoreStrategy {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-apollo-operation-name", "categoryGridRetrieve");
         headers.set("apollo-require-preflight", "true");
+        headers.set("Accept-Language", "en-US,en;q=0.9");
         headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
         headers.set("Origin", "https://www.playstation.com");
         headers.set("Referer", "https://www.playstation.com/");
@@ -69,7 +71,7 @@ public class PlaystationStrategy implements StoreStrategy {
             for(JsonNode gameNode: concepts){
                 String name = gameNode.path("name").asText();
                 String productId = gameNode.path("id").asText();
-                String storeUrl = "https://store.playstation.com/en-us/concept/" + productId;
+                String storeUrl = "https://store.playstation.com/en-us/product/" + gameNode.path("products").get(0).path("id").asText();
                 games.add(new GameDto(name, storeUrl));
             }
 
