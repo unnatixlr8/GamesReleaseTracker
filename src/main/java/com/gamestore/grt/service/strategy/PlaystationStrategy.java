@@ -27,7 +27,7 @@ public class PlaystationStrategy implements StoreStrategy {
         RestTemplate restTemplate = new RestTemplate();
 
         String variables = String.format(
-                "{\"id\":\"%s\",\"pageArgs\":{\"size\":48,\"offset\":0},\"sortBy\":{\"name\":\"conceptReleaseDate\",\"isAscending\":false},\"filterBy\":[],\"facetOptions\":[]}",
+                "{\"id\":\"%s\",\"pageArgs\":{\"size\":48,\"offset\":0},\"sortBy\":{\"name\":\"conceptReleaseDate\",\"isAscending\":false},\"filterBy\":[\"conceptReleaseDate:last_thirty_days\"],\"facetOptions\":[]}",
                 CATEGORY_ID
         );
 
