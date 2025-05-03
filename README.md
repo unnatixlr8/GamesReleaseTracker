@@ -31,6 +31,6 @@ A Spring Boot web application to track and export newly released games from Play
 
 ### Running the Application
 ```bash
-git clone https://github.com/yourusername/game-releases-tracker.git
-cd game-releases-tracker
+git clone https://github.com/unnatixlr8/GamesReleaseTracker.git
+cd GamesReleaseTracker
 ./mvnw spring-boot:run
