@@ -33,5 +33,10 @@
             </tbody>
         </table>
     </div>
+    <div class="text-center mb-5">
+        <form th:action="@{/exportToCSV}" method="get">
+            <button type="submit" class="btn btn-success mt-3">Export to CSV</button>
+        </form>
+    </div>
 </body>
 </html>

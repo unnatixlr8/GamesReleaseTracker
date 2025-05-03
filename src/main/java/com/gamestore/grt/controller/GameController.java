@@ -3,6 +3,8 @@ package com.gamestore.grt.controller;
 import com.gamestore.grt.dto.GameDto;
 import com.gamestore.grt.factory.StoreStrategyFactory;
 import com.gamestore.grt.service.strategy.StoreStrategy;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
 public class GameController {
     @Autowired
     private StoreStrategyFactory strategyFactory;
+
+    @Autowired
+    private HttpSession session;
 
     @GetMapping("/")
     public String home(){
@@ -36,7 +46,40 @@ public class GameController {
         List<GameDto> games = strategy.fetchNewReleases();
         model.addAttribute("games", games);
         model.addAttribute("store", store);
+        session.setAttribute("lastFetchedGames", games);
+        session.setAttribute("selectedStore", store);
         return "games";
 
+    }
+
+    @GetMapping("/exportToCSV")
+    public void exportGamesToCsv(HttpServletResponse response) throws IOException{
+        List<GameDto> games = (List<GameDto>) session.getAttribute("lastFetchedGames");
+        String store = (String) session.getAttribute("selectedStore");
+
+        if (games == null || games.isEmpty()){
+            response.sendError(HttpServletResponse.SC_NO_CONTENT, "No games to export.");
+            return;
+        }
+        if(store == null) store = "unknown";
+        String date = LocalDate.now().toString();
+        String filename = store.toLowerCase() + "_" + date + ".csv";
+
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+
+        OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+
+        writer.write('\uFEFF');
+        writer.write("Game Name,Store Link\n");
+
+        for(GameDto game: games){
+            String title = game.getTitle().replace("\"", "\"\"");
+                    String storeUrl = game.getStoreUrl().replace("\"", "\"\"");
+            writer.write(String.format("\"%s\",\"%s\"\n",title,storeUrl));
+        }
+
+        writer.flush();
+        writer.close();
     }
 }
