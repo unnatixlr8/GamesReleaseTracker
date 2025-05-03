@@ -1,4 +1,4 @@
-# 🎮 Game Release Tracker
+# 🎮 Games Release Tracker
 
 A Spring Boot web application to track and export newly released games from PlayStation Store, Steam Store, and Nintendo eShop.
 
