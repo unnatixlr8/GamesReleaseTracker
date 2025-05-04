@@ -23,12 +23,14 @@
                 <tr>
                     <th>Game Name</th>
                     <th>Store Link</th>
+                    <th th:if="${store == 'nintendo-jp'}">Tentative Release Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="game : ${games}">
                     <td th:text="${game.title}">Game</td>
                     <td><a th:href="${game.storeUrl}" target="_blank" th:text="${game.storeUrl}" class="btn btn-sm btn-primary d-inline-block text-center store-url-button">Link</a></td>
+                    <td th:if="${store == 'nintendo-jp'}" th:text="${game.dsDate}">releaseDate</td>
                 </tr>
             </tbody>
         </table>
