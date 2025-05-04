@@ -71,12 +71,25 @@ public class GameController {
         OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
 
         writer.write('\uFEFF');
-        writer.write("Game Name,Store Link\n");
 
-        for(GameDto game: games){
-            String title = game.getTitle().replace("\"", "\"\"");
-                    String storeUrl = game.getStoreUrl().replace("\"", "\"\"");
-            writer.write(String.format("\"%s\",\"%s\"\n",title,storeUrl));
+        //only for eshop japan
+        if(store.equals("nintendo-jp")){
+            writer.write("Game Name,Store Link,Tentative Release Date\n");
+            for(GameDto game: games){
+                String title = game.getTitle().replace("\"", "\"\"");
+                String storeUrl = game.getStoreUrl().replace("\"", "\"\"");
+                String dsDate = game.getDsDate().replace("\"", "\"\"");
+                writer.write(String.format("\"%s\",\"%s\",\"%s\"\n",title,storeUrl,dsDate));
+            }
+        }
+        else{
+            writer.write("Game Name,Store Link\n");
+
+            for(GameDto game: games){
+                String title = game.getTitle().replace("\"", "\"\"");
+                String storeUrl = game.getStoreUrl().replace("\"", "\"\"");
+                writer.write(String.format("\"%s\",\"%s\"\n",title,storeUrl));
+            }
         }
 
         writer.flush();
