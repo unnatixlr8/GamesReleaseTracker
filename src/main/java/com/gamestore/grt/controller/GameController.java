@@ -2,6 +2,7 @@ package com.gamestore.grt.controller;
 
 import com.gamestore.grt.dto.GameDto;
 import com.gamestore.grt.factory.StoreStrategyFactory;
+import com.gamestore.grt.service.strategy.ExportService;
 import com.gamestore.grt.service.strategy.StoreStrategy;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +19,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GameController {
@@ -94,5 +98,20 @@ public class GameController {
 
         writer.flush();
         writer.close();
+    }
+
+    @GetMapping("/export/all")
+    public void exportAllGames(HttpServletResponse response) throws IOException{
+        List<String> stores = List.of("steam", "playstation", "nintendo", "nintendo-jp");
+        Map<String, List<GameDto>> gamesByStores = new LinkedHashMap<>();
+
+        for(String store: stores){
+            StoreStrategy strategy = strategyFactory.getStrategy(store);
+            List<GameDto> games = strategy.fetchNewReleases();
+            gamesByStores.put(store, games);
+        }
+        ExportService exportService = new ExportService();
+        exportService.exportToExcel(response, gamesByStores);
+
     }
 }

@@ -5,23 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games Release Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light d-flex align-items-center" style="min-height: 100vh;">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #BBD3C5
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 2.8rem;
+            color: #2a3439;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+            text-align: center;
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .game-image {
+            max-width: 272px;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.2));
+        }
+        @media (max-width: 768px) {
+            .game-image {
+                width: 200px; /* Slightly smaller on tablets */
+            }
+        }
 
-<div class="container text-center">
-    <h1>Games Release Tracker</h1>
-    <div class="card shadow p-5">
-          <h2 class="mb-4">Select Digital Store fronts</h2>
+        @media (max-width: 576px) {
+            .game-image {
+                width: 150px; /* Even smaller on phones */
+            }
+        @media (max-width: 576px) {
+            .button-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="content">
+    <div class="container text-center py-5">
+        <h1 class="game-title">Games Release Tracker</h1>
+        <!-- Game controller image -->
+        <img th:src="@{/images/gamecontroller.png}"
+             alt="Game Controller"
+             class="game-image" >
+
+        <div class="card shadow p-5">
+            <h2 class="mb-4">Select Digital Storefronts</h2>
             <form action="/games" method="get">
-                    <select name="store" class="form-select form-select-lg" required>
-                        <option value="steam">Steam</option>
-                        <option value="nintendo">Nintendo</option>
-                        <option value="nintendo-jp">Nintendo JP</option>
-                        <option value="playstation">Playstation</option>
-                    </select>
-                <button type="submit" class="btn btn-primary btn-lg mt-3">Show Recent Games</button>
+                <select name="store" class="form-select form-select-lg" required>
+                    <option value="steam">Steam</option>
+                    <option value="nintendo">Nintendo</option>
+                    <option value="nintendo-jp">Nintendo JP</option>
+                    <option value="playstation">Playstation</option>
+                </select>
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary btn-lg">Show Recent Games</button>
+                    <button formaction="/export/all" class="btn btn-success btn-lg">Export All Recent Games</button>
+                </div>
             </form>
+        </div>
     </div>
 </div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white">
+    <div class="container text-center py-2">
+        <p class="mb-0">&copy; 2025 Unnati Gupta. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

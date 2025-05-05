@@ -1,5 +1,6 @@
 package com.gamestore.grt.service.strategy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,9 +92,9 @@ public class NintendoJPStrategy implements StoreStrategy{
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime gameReleaseDate = LocalDateTime.parse(dsDate, formatter);
-            YearMonth currentYearMonth = YearMonth.now();
-            return(gameReleaseDate.getYear() == currentYearMonth.getYear() &&
-                    gameReleaseDate.getMonth() == currentYearMonth.getMonth());
+            LocalDate gameDate = gameReleaseDate.toLocalDate();
+            LocalDate today = LocalDate.now();
+            return(!gameDate.isBefore(today.minusDays(5)) && !gameDate.isAfter(today.plusDays(5)));
         }
         catch(Exception e){
             System.out.println("invalid dsdate" + dsDate);
