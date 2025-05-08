@@ -70,8 +70,13 @@ public class PlaystationStrategy implements StoreStrategy {
 
             for(JsonNode gameNode: concepts){
                 String name = gameNode.path("name").asText();
-                String productId = gameNode.path("id").asText();
-                String storeUrl = "https://store.playstation.com/en-us/product/" + gameNode.path("products").get(0).path("id").asText();
+                //String productId = gameNode.path("id").asText();
+                JsonNode productsNode = gameNode.path("products");
+                String storeUrl = "";
+
+                if (productsNode.isArray() && !productsNode.isEmpty() && productsNode.get(0).has("id")) {
+                    storeUrl = "https://store.playstation.com/en-us/product/" + productsNode.get(0).path("id").asText();
+                }
                 games.add(new GameDto(name, storeUrl));
             }
 

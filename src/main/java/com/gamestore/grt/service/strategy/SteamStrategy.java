@@ -17,19 +17,25 @@ public class SteamStrategy implements StoreStrategy {
     @Override
     public List<GameDto> fetchNewReleases(){
         RestTemplate restTemplate = new RestTemplate();
-        String jsonStr = restTemplate.getForObject(API_URL, String.class);
+        try{
+            String jsonStr = restTemplate.getForObject(API_URL, String.class);
 
-        JSONObject json = new JSONObject(jsonStr);
-        JSONArray items = json.getJSONObject("new_releases").getJSONArray("items");
+            JSONObject json = new JSONObject(jsonStr);
+            JSONArray items = json.getJSONObject("new_releases").getJSONArray("items");
 
-        List<GameDto> games = new ArrayList<>();
-        for(int i = 0; i < items.length(); i++){
-            JSONObject game = items.getJSONObject(i);
-            String name = game.getString("name");
-            String storeUrl = "https://store.steampowered.com/app/" + game.getInt("id");
-            games.add(new GameDto(name, storeUrl));
+            List<GameDto> games = new ArrayList<>();
+            for(int i = 0; i < items.length(); i++){
+                JSONObject game = items.getJSONObject(i);
+                String name = game.getString("name");
+                String storeUrl = "https://store.steampowered.com/app/" + game.getInt("id");
+                games.add(new GameDto(name, storeUrl));
 
+            }
+            return games;
         }
-        return games;
+        catch (Exception e){
+            throw new RuntimeException("Cannot fetch Playstation store games");
+        }
+
     }
 }
