@@ -38,7 +38,7 @@ public class NintendoJPStrategy implements StoreStrategy{
                     .queryParam(encodedXopt, "sales_termination")
                     .queryParam(encodedFq, "")
                     .queryParam(encodedFq,encodedFqValue)
-                    .queryParam("limit", "200")
+                    .queryParam("limit", "400")
                     .queryParam("page", "1")
                     .queryParam("c", "6348702640203614")
                     .queryParam("sort", encodedSort)
